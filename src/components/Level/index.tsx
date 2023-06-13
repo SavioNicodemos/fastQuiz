@@ -4,7 +4,9 @@ import { THEME } from '../../styles/theme';
 import { styles } from './styles';
 import Animated, {
   useSharedValue,
-  useAnimatedStyle
+  useAnimatedStyle,
+  withTiming,
+  Easing
 } from 'react-native-reanimated';
 
 const TYPE_COLORS = {
@@ -31,11 +33,11 @@ export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Prop
   });
 
   const handlePressIn = () => {
-    scale.value = 1.2;
+    scale.value = withTiming(1.2);
   }
 
   const handlePressOut = () => {
-    scale.value = 1;
+    scale.value = withTiming(1);
   }
 
   return (
