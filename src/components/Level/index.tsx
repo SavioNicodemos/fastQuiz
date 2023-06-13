@@ -10,6 +10,8 @@ import Animated, {
   interpolateColor
 } from 'react-native-reanimated';
 
+const PressableAnimated = Animated.createAnimatedComponent(Pressable);
+
 const TYPE_COLORS = {
   EASY: THEME.COLORS.BRAND_LIGHT,
   HARD: THEME.COLORS.DANGER_LIGHT,
@@ -33,7 +35,7 @@ export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Prop
       transform: [{ scale: scale.value }],
       backgroundColor: interpolateColor(
         checked.value,
-        [0, 1], 
+        [0, 1],
         ['transparent', COLOR]),
     }
   });
@@ -42,7 +44,7 @@ export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Prop
     return {
       color: interpolateColor(
         checked.value,
-        [0, 1], 
+        [0, 1],
         [COLOR, THEME.COLORS.GREY_100]),
     }
   });
@@ -60,25 +62,15 @@ export function Level({ title, type = 'EASY', isChecked = false, ...rest }: Prop
   }, [isChecked]);
 
   return (
-    <Pressable
+    <PressableAnimated
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      {...rest}>
-      <Animated.View style={
-        [
-          styles.container,
-          animatedContainerStyle,
-          { borderColor: COLOR }
-        ]
-      }>
-        <Animated.Text style={
-          [
-            styles.title,
-            animatedTextStyle,
-          ]}>
-          {title}
-        </Animated.Text>
-      </Animated.View>
-    </Pressable>
+      style={[styles.container, animatedContainerStyle, { borderColor: COLOR }]}
+      {...rest}
+    >
+      <Animated.Text style={[styles.title, animatedTextStyle]}>
+        {title}
+      </Animated.Text>
+    </PressableAnimated>
   );
 }
