@@ -82,13 +82,19 @@ export function Quiz() {
       return handleSkipConfirm();
     }
 
+    let timeout = 0;
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
       setPoints(prevState => prevState + 1);
     } else {
       shakeAnimation();
+      timeout = 400;
     }
 
     setAlternativeSelected(null);
+
+    setTimeout(() => {
+      handleNextQuestion();
+    }, timeout);
   }
 
   function handleStop() {
@@ -158,12 +164,6 @@ export function Quiz() {
     setQuiz(quizSelected);
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    if (quiz.questions) {
-      handleNextQuestion();
-    }
-  }, [points]);
 
   if (isLoading) {
     return <Loading />
