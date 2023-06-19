@@ -41,6 +41,7 @@ const CARD_SKIP_AREA = -200;
 export function Quiz() {
   const [points, setPoints] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [statusReply, setStatusReply] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quiz, setQuiz] = useState<QuizProps>({} as QuizProps);
   const [alternativeSelected, setAlternativeSelected] = useState<null | number>(null);
@@ -88,11 +89,13 @@ export function Quiz() {
     if (alternativeSelected === null) {
       return handleSkipConfirm();
     }
-
+    
     let timeout = 0;
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
+      setStatusReply(1);
       setPoints(prevState => prevState + 1);
     } else {
+      setStatusReply(2);
       shakeAnimation();
       timeout = 400;
     }
@@ -205,7 +208,7 @@ export function Quiz() {
 
   return (
     <View style={styles.container}>
-      <OverlayFeedback status={2} />
+      <OverlayFeedback status={statusReply} />
       <Animated.View style={fixedProgressBarStyles}>
         <Text style={styles.title}>
           {quiz.title}
