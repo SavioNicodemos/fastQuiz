@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
+import { Audio } from 'expo-av';
+import * as Haptics from 'expo-haptics';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -28,7 +30,6 @@ import { OutlineButton } from '../../components/OutlineButton';
 import { ProgressBar } from '../../components/ProgressBar';
 import { THEME } from '../../styles/theme';
 import { OverlayFeedback } from '../../components/OverlayFeedback';
-import { Audio } from 'expo-av';
 
 interface Params {
   id: string;
@@ -131,7 +132,9 @@ export function Quiz() {
     return true;
   }
 
-  function shakeAnimation() {
+  async function shakeAnimation() {
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    
     shake.value = withSequence(
       withTiming(3, { duration: 400, easing: Easing.bounce }),
       withTiming(0, undefined, (finished) => {
