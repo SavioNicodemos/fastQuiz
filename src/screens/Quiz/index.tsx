@@ -27,6 +27,7 @@ import { ConfirmButton } from '../../components/ConfirmButton';
 import { OutlineButton } from '../../components/OutlineButton';
 import { ProgressBar } from '../../components/ProgressBar';
 import { THEME } from '../../styles/theme';
+import { OverlayFeedback } from '../../components/OverlayFeedback';
 
 interface Params {
   id: string;
@@ -204,6 +205,7 @@ export function Quiz() {
 
   return (
     <View style={styles.container}>
+      <OverlayFeedback status={2} />
       <Animated.View style={fixedProgressBarStyles}>
         <Text style={styles.title}>
           {quiz.title}
