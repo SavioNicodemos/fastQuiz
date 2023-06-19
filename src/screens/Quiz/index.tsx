@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Text, View, BackHandler } from 'react-native';
 import { Audio } from 'expo-av';
 import * as Haptics from 'expo-haptics';
 import Animated, {
@@ -99,7 +99,7 @@ export function Quiz() {
     if (alternativeSelected === null) {
       return handleSkipConfirm();
     }
-    
+
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
       setPoints(prevState => prevState + 1);
 
@@ -112,7 +112,7 @@ export function Quiz() {
       setStatusReply(2);
       shakeAnimation();
     }
-  
+
     setAlternativeSelected(null);
   }
 
@@ -134,7 +134,7 @@ export function Quiz() {
 
   async function shakeAnimation() {
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-    
+
     shake.value = withSequence(
       withTiming(3, { duration: 400, easing: Easing.bounce }),
       withTiming(0, undefined, (finished) => {
@@ -217,6 +217,12 @@ export function Quiz() {
     setQuiz(quizSelected);
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleStop)
+
+    return () => backHandler.remove();
+  }, [])
 
   if (isLoading) {
     return <Loading />
